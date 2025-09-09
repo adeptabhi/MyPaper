@@ -1,17 +1,34 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:mypaper/app/app_colors.dart';
-import 'package:mypaper/app/theme.dart';
 import 'package:mypaper/common/dialog/dialog_type.dart';
+import 'package:mypaper/common/model/subject_mdl.dart';
+import 'package:mypaper/common/widget/list_erd_widget.dart';
 import 'package:mypaper/features/home/provider/home_bottom_provider.dart';
+import 'package:mypaper/features/home/provider/home_provider.dart';
 import 'package:mypaper/features/home/view/home_bottom.dart';
+import 'package:mypaper/features/home/widget/home_title_widget.dart';
+import 'package:mypaper/features/home/widget/subject_card_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common/enum/dialog_type.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   const HomeView({super.key});
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  late HomeProvider provider = context.read<HomeProvider>();
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      provider.getSubject();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -28,77 +45,30 @@ class HomeView extends StatelessWidget {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         extendBody: true,
-        appBar: AppBar(automaticallyImplyLeading: false, title: _Profile()),
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: HomeTitleWidget(),
+        ),
         body: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              //  _Profile(),
-              // Expanded(
-              //   child: HomeExamCodeWidget(
-              //     provider: context.read<HomeProvider>(),
-              //   ),
-              // ),
-              SizedBox(height: 100),
-            ],
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+          child: Selector<HomeProvider, List<SubjectMdl>?>(
+            selector: (p0, p1) => p1.subjects,
+            builder: (context, list, child) {
+              return ListERDWidget<SubjectMdl>(
+                onRefresh: () => provider.getSubject(),
+                title: 'No Subject Found',
+                list: list,
+                builder: (mdl, index) => InkWell(
+                  onTap: () => provider.getQuestion(mdl),
+                  child: SubjectCardWidget(mdl: mdl),
+                ),
+              );
+            },
           ),
         ),
         bottomNavigationBar: Provider(
           create: (con) => HomeBottomProvider(index: 'Home', context: context),
           child: HomeBottom(),
-        ),
-      ),
-    );
-  }
-}
-
-class _Profile extends StatelessWidget {
-  const _Profile();
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 10),
-      child: SizedBox(
-        width: double.infinity,
-        child: Stack(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Hey, Vikas Yadav',
-                  style: textStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.white,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                ),
-                Text(
-                  'vy44664@gmail.com',
-                  style: textStyle(fontSize: 8, color: Colors.white),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
-            Positioned(
-              left: 0,
-              right: 0,
-              child: Center(
-                child: Text(
-                  'UPP Programmer',
-                  style: textStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.white,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ),
-          ],
         ),
       ),
     );

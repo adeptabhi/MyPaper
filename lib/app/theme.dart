@@ -5,7 +5,7 @@ TextStyle textStyle({double? fontSize, FontWeight? fontWeight, Color? color}) {
   return TextStyle(
     fontSize: fontSize ?? 15,
     fontWeight: fontWeight ?? FontWeight.w400,
-    color: color ?? Color(0xFF222F36),
+    color: color ?? Color(0xFF545454),
   );
 }
 
@@ -18,7 +18,7 @@ ThemeData lightTheme = ThemeData(
     iconTheme: const IconThemeData(color: AppColors.white, size: 25),
     titleSpacing: 0,
     titleTextStyle: textStyle(
-      fontSize: 17,
+      fontSize: 18,
       fontWeight: FontWeight.w600,
       color: AppColors.white,
     ),
@@ -53,15 +53,15 @@ ThemeData lightTheme = ThemeData(
   ),
   cardTheme: CardThemeData(
     margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-    color: AppColors.grey20,
+    color: AppColors.grey15,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
     elevation: 2,
-    surfaceTintColor: AppColors.blue20,
+    surfaceTintColor: AppColors.blue15,
     shadowColor: AppColors.blue50,
   ),
 
   listTileTheme: ListTileThemeData(
-    tileColor: AppColors.grey20,
+    tileColor: AppColors.grey15,
     selectedTileColor: AppColors.red,
     contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -110,7 +110,7 @@ ThemeData lightTheme = ThemeData(
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
   ),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
-    backgroundColor: AppColors.black20,
+    backgroundColor: AppColors.black15,
   ),
   inputDecorationTheme: InputDecorationTheme(
     suffixIconColor: AppColors.blue,
@@ -118,7 +118,7 @@ ThemeData lightTheme = ThemeData(
     hintStyle: textStyle(
       fontSize: 16,
       fontWeight: FontWeight.normal,
-      color: AppColors.grey20,
+      color: AppColors.grey15,
     ),
     labelStyle: const TextStyle(color: Color.fromARGB(114, 0, 0, 0)),
     contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),

@@ -54,15 +54,15 @@ extension StatusExtension on Status {
   Color get colorL3 {
     switch (this) {
       case Status.all:
-        return AppColors.charcoal20;
+        return AppColors.charcoal15;
       case Status.pending:
-        return AppColors.orange20;
+        return AppColors.orange15;
       case Status.inprogress:
-        return AppColors.blue20;
+        return AppColors.blue15;
       case Status.completed:
-        return AppColors.green20;
+        return AppColors.green15;
       case Status.cancel:
-        return AppColors.red20;
+        return AppColors.red15;
     }
   }
 

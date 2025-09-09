@@ -7,14 +7,14 @@ import 'package:mypaper/other/msg.dart';
 class ApiClient {
   final Map<String, String> _headers = {'Accept': 'application/json'};
   Future<Map<String, dynamic>> request({
-    required String path,
+    required String file,
     required HttpMethodTypes method,
     Map<String, dynamic>? payload,
     Map<String, dynamic>? parameter,
   }) async {
     late http.Response response;
     Uri uri = Uri.parse(
-      AppData.baseUrl + path,
+      AppData.baseUrl + file,
     ).replace(queryParameters: {if (parameter != null) ...parameter});
     logInfo('ApiClient/Request/URI', msg: "${method.name.toUpperCase()}: $uri");
     logInfo('ApiClient/Request/Header', msg: jsonEncode(_headers));
@@ -56,8 +56,8 @@ class ApiClient {
           break;
       }
       final jsonResponse = jsonDecode(response.body);
-      logSuccess('ApiClient/Request/Response', msg: response.body);
-      logSuccess('ApiClient/Request/StatusCode', msg: response.statusCode);
+      // logSuccess('ApiClient/Request/Response', msg: response.body);
+      // logSuccess('ApiClient/Request/StatusCode', msg: response.statusCode);
       if (response.statusCode == 200) {
         return jsonResponse;
       }

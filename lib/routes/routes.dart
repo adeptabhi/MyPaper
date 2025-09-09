@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:mypaper/common/model/ques_mdl.dart';
 import 'package:mypaper/features/home/provider/home_provider.dart';
 import 'package:mypaper/features/home/view/home_view.dart';
+import 'package:mypaper/features/paper/model/paper_nav_mdl.dart';
+import 'package:mypaper/features/paper/provider/paper_provider.dart';
+import 'package:mypaper/features/paper/view/paper_view.dart';
 import 'package:mypaper/features/splash/provider/splash_provider.dart';
 import 'package:mypaper/features/splash/view/splash_view.dart';
 import 'package:mypaper/other/msg.dart';
@@ -46,10 +50,24 @@ class Routes {
       case RouteName.home:
         return PageRouteBuilder(
           settings: RouteSettings(name: settings.name),
-          pageBuilder: (context, animation, secondaryAnimation) => Provider(
-            create: (context) => HomeProvider(context: context),
-            child: const HomeView(),
-          ),
+          pageBuilder: (context, animation, secondaryAnimation) =>
+              ChangeNotifierProvider(
+                create: (context) => HomeProvider(context: context),
+                child: const HomeView(),
+              ),
+        );
+
+      case RouteName.paper:
+        return PageRouteBuilder(
+          settings: RouteSettings(name: settings.name),
+          pageBuilder: (context, animation, secondaryAnimation) =>
+              ChangeNotifierProvider(
+                create: (context) => PaperProvider(
+                  context: context,
+                  paperMdl: settings.arguments as PaperNavMdl,
+                ),
+                child: const PaperView(),
+              ),
         );
     }
     return null;
