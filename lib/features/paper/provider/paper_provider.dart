@@ -1,33 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:mypaper/common/enum/option_type.dart';
 import 'package:mypaper/common/model/ques_mdl.dart';
-import 'package:mypaper/features/paper/model/paper_nav_mdl.dart';
+import 'package:mypaper/common/model/subject_mdl.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class PaperProvider extends ChangeNotifier {
-  BuildContext context;
-  PaperNavMdl paperMdl;
-  PaperProvider({required this.context, required this.paperMdl});
-  final ScrollController scrollController = ScrollController();
-  List<GlobalKey> keys = [];
+  bool isView;
+  SetMdl setMdl;
+  SubjectMdl subjectMdl;
+  List<QuesMdl> questions;
+  PaperProvider({
+    required this.isView,
+    required this.setMdl,
+    required this.subjectMdl,
+    required this.questions,
+  });
 
-  @override
-  void dispose() {
-    super.dispose();
-    scrollController.dispose();
+  final ItemScrollController itemScrollController = ItemScrollController();
+
+  void onSelectOption(QuesMdl mdl, int index) {
+    if (!isView) {
+      if (mdl.userAnswer == index) {
+        mdl.userAnswer = -1;
+      } else {
+        mdl.userAnswer = index;
+      }
+      notifyListeners();
+    }
   }
 
-  void onSelect(QuesMdl mdl, int index) {
-    if (mdl.userAnswer == index) {
-      mdl.userAnswer = -1;
-    } else {
-      mdl.userAnswer = index;
-    }
+  void onVisibilityChange(QuesMdl mdl) {
+    mdl.ansIsVisible = !mdl.ansIsVisible;
     notifyListeners();
   }
 
   OptionType getOptionType(QuesMdl mdl, int index) {
-    return mdl.userAnswer == index
+    return isView
+        ? (mdl.userAnswer == index && mdl.isAns
+              ? (mdl.userAnswer == mdl.answer
+                    ? OptionType.correctAnswer
+                    : OptionType.wrongAnswer)
+              : mdl.answer == index && mdl.isAns
+              ? OptionType.correctAnswer
+              : OptionType.unselected)
+        : mdl.userAnswer == index
         ? OptionType.selected
         : OptionType.unselected;
+  }
+
+  void onViewResult() {
+    isView = true;
+    notifyListeners();
   }
 }

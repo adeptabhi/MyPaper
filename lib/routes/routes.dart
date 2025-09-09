@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mypaper/common/model/ques_mdl.dart';
 import 'package:mypaper/features/home/provider/home_provider.dart';
 import 'package:mypaper/features/home/view/home_view.dart';
-import 'package:mypaper/features/paper/model/paper_nav_mdl.dart';
 import 'package:mypaper/features/paper/provider/paper_provider.dart';
 import 'package:mypaper/features/paper/view/paper_view.dart';
 import 'package:mypaper/features/splash/provider/splash_provider.dart';
@@ -61,11 +59,8 @@ class Routes {
         return PageRouteBuilder(
           settings: RouteSettings(name: settings.name),
           pageBuilder: (context, animation, secondaryAnimation) =>
-              ChangeNotifierProvider(
-                create: (context) => PaperProvider(
-                  context: context,
-                  paperMdl: settings.arguments as PaperNavMdl,
-                ),
+              ChangeNotifierProvider.value(
+                value: settings.arguments as PaperProvider,
                 child: const PaperView(),
               ),
         );

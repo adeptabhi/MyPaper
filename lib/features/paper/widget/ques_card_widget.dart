@@ -5,7 +5,6 @@ import 'package:mypaper/common/model/ques_mdl.dart';
 import 'package:mypaper/common/widget/card_widget.dart';
 import 'package:mypaper/features/paper/provider/paper_provider.dart';
 import 'package:mypaper/features/paper/widget/ques_option_widget.dart';
-import 'package:mypaper/other/msg.dart';
 import 'package:provider/provider.dart';
 
 class QuesWidget extends StatelessWidget {
@@ -13,7 +12,6 @@ class QuesWidget extends StatelessWidget {
   const QuesWidget({super.key, required this.questionMdl});
   @override
   Widget build(BuildContext context) {
-    logError('name', msg: key);
     return CardWidget(
       key: key,
       child: Column(
@@ -50,8 +48,10 @@ class QuesWidget extends StatelessWidget {
             (index) => Padding(
               padding: const EdgeInsets.symmetric(vertical: 5),
               child: InkWell(
-                onTap: () =>
-                    context.read<PaperProvider>().onSelect(questionMdl, index),
+                onTap: () => context.read<PaperProvider>().onSelectOption(
+                  questionMdl,
+                  index,
+                ),
                 child: Selector<PaperProvider, int>(
                   selector: (p0, p1) => questionMdl.userAnswer,
                   builder: (context, value, child) {
@@ -69,7 +69,28 @@ class QuesWidget extends StatelessWidget {
             ),
           ),
           SizedBox(height: 5),
-          Text(questionMdl.options[questionMdl.answer]),
+          Selector<PaperProvider, bool>(
+            selector: (c, p) => questionMdl.ansIsVisible,
+            builder: (c, isVisible, child) {
+              return Row(
+                children: [
+                  InkWell(
+                    onTap: () => context
+                        .read<PaperProvider>()
+                        .onVisibilityChange(questionMdl),
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 5, left: 3),
+                      child: Icon(
+                        isVisible ? Icons.visibility_off : Icons.visibility,
+                        size: 18,
+                      ),
+                    ),
+                  ),
+                  if (isVisible) Text(questionMdl.options[questionMdl.answer]),
+                ],
+              );
+            },
+          ),
         ],
       ),
     );

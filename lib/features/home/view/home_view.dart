@@ -59,7 +59,7 @@ class _HomeViewState extends State<HomeView> {
                 title: 'No Subject Found',
                 list: list,
                 builder: (mdl, index) => InkWell(
-                  onTap: () => provider.getQuestion(mdl),
+                  onTap: () => provider.onTapCard(mdl),
                   child: SubjectCardWidget(mdl: mdl),
                 ),
               );

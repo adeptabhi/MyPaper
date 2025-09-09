@@ -37,8 +37,8 @@ class HomeTitleWidget extends StatelessWidget {
               right: 0,
               child: Center(
                 child: Text(
-                  // 'UPP Programmer',
-                  '******',
+                  'UPP Programmer',
+                  //'******',
                   style: textStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w600,

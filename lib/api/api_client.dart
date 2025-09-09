@@ -56,8 +56,8 @@ class ApiClient {
           break;
       }
       final jsonResponse = jsonDecode(response.body);
-      // logSuccess('ApiClient/Request/Response', msg: response.body);
-      // logSuccess('ApiClient/Request/StatusCode', msg: response.statusCode);
+      logSuccess('ApiClient/Request/StatusCode', msg: response.statusCode);
+      logSuccess('ApiClient/Request/Response', msg: response.body);
       if (response.statusCode == 200) {
         return jsonResponse;
       }

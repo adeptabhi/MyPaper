@@ -1,15 +1,14 @@
 class QuesMdl {
   int id;
-  int topicId;
   String topic;
   String question;
   List<String> options;
   int answer;
   int userAnswer;
+  bool ansIsVisible = false;
 
   QuesMdl({
     required this.id,
-    required this.topicId,
     required this.topic,
     required this.question,
     required this.options,
@@ -19,7 +18,6 @@ class QuesMdl {
 
   factory QuesMdl.fromJson(Map<String, dynamic> json) => QuesMdl(
     id: json["id"],
-    topicId: json["topicId"],
     topic: json["topic"],
     question: json["question"],
     options: List<String>.from(json["options"].map((x) => x)),
@@ -29,7 +27,6 @@ class QuesMdl {
 
   Map<String, dynamic> toJson() => {
     "id": id,
-    "topicId": topicId,
     "topic": topic,
     "question": question,
     "options": List<dynamic>.from(options.map((x) => x)),

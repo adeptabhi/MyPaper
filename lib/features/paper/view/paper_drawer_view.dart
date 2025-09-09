@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mypaper/app/app_colors.dart';
 import 'package:mypaper/app/theme.dart';
 import 'package:mypaper/common/btn/bottom_btn_widget.dart';
+import 'package:mypaper/common/dialog/dialog_type.dart';
+import 'package:mypaper/common/enum/dialog_type.dart';
 import 'package:mypaper/features/paper/enum/paper_count_type.dart';
 import 'package:mypaper/features/paper/provider/paper_drawer_provider.dart';
 import 'package:mypaper/features/paper/provider/paper_provider.dart';
@@ -61,40 +63,52 @@ class PaperDrawerView extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   shrinkWrap: true,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 4,
+                    crossAxisCount: 5,
                     mainAxisSpacing: 5,
                     crossAxisSpacing: 5,
                     childAspectRatio: 1.2,
                   ),
-                  itemCount: paperProvider.paperMdl.questions.length,
+                  itemCount: (paperProvider.questions).length,
                   itemBuilder: (context, index) {
                     return InkWell(
                       onTap: () {
                         // Navigator.pop(context);
-                        provider.onTapIndex(index);
+                        provider.onTapIndex(context, index);
                       },
                       child: PaperCountWidget(
                         value: (index + 1).toString(),
                         type: provider.getCountType(
-                          paperProvider.paperMdl.questions[index],
+                          paperProvider.questions[index],
                         ),
                       ),
                     );
                   },
                 ),
               ),
-              SizedBox(
-                width: double.infinity,
-                height: 45,
-                child: OverflowBox(
-                  maxWidth: MediaQuery.of(context).size.width,
-                  child: BottomBtnWidget(
-                    paperProvider.paperMdl.isView ? 'Exit' : 'Save & Exit',
-                    color: AppColors.green,
-                    onTap: () {}, //paperProvider.onTapSaveExit,
+              if (!provider.paperProvider.isView)
+                SizedBox(
+                  width: double.infinity,
+                  height: 45,
+                  child: OverflowBox(
+                    maxWidth: MediaQuery.of(context).size.width,
+                    child: BottomBtnWidget(
+                      'View Result', // paperProvider.isView ? 'Exit' : 'Save & Exit',
+                      color: AppColors.green,
+                      onTap: () {
+                        dialogType(
+                          context,
+                          type: DialogType.confirmation,
+                          message: 'Are you sure want to view result??',
+                          onConfirm: () {
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                            provider.paperProvider.onViewResult();
+                          },
+                        );
+                      },
+                    ),
                   ),
                 ),
-              ),
             ],
           ),
         ),

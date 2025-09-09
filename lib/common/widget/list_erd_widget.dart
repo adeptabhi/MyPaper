@@ -7,12 +7,14 @@ class ListERDWidget<T> extends StatelessWidget {
   final Function()? onRefresh;
   final String? title;
   final List<T>? list;
+  final ScrollController? controller;
   final Widget Function(T, int) builder;
   const ListERDWidget({
     super.key,
     this.onRefresh,
     this.title,
     required this.list,
+    this.controller,
     required this.builder,
   });
 
@@ -32,6 +34,7 @@ class ListERDWidget<T> extends StatelessWidget {
       child: LayoutBuilder(
         builder: (context, constraints) {
           return ListView(
+            controller: controller,
             shrinkWrap: true,
             children: [
               if (list != null && list!.isNotEmpty)

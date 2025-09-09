@@ -47,7 +47,7 @@ class ApiService {
         method: HttpMethodTypes.get,
       );
       if (json.isNotEmpty) {
-        return (json['paper'] as List<dynamic>)
+        return (json['set'] as List<dynamic>)
             .map((e) => QuesMdl.fromJson(e))
             .toList();
       }
