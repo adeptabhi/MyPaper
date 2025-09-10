@@ -13,18 +13,30 @@ class SubjectCardWidget extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(5.0),
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
               '${mdl.id}. ',
-              style: textStyle(fontSize: 16.5, color: AppColors.black),
+              style: textStyle(fontSize: 15.5, color: AppColors.black),
             ),
-            Text(
-              mdl.name,
-              style: textStyle(fontSize: 16.5, color: AppColors.blue),
+            SizedBox(width: 5),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    '${mdl.section}. ',
+                    style: textStyle(fontSize: 14.5, color: AppColors.violet),
+                  ),
+                  Text(
+                    mdl.name,
+                    style: textStyle(fontSize: 14.5, color: AppColors.blue),
+                  ),
+                ],
+              ),
             ),
-            Spacer(),
             Text(
               'Sets: ${mdl.sets.length}',
               style: textStyle(fontSize: 13, color: AppColors.red),

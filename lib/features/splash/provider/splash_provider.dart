@@ -11,7 +11,7 @@ class SplashProvider {
   }
   void initState() {
     Timer(const Duration(seconds: 3), () async {
-      Navigator.pushReplacementNamed(context, RouteName.home);
+      Navigator.pushReplacementNamed(context, RouteName.dash);
     });
   }
 }

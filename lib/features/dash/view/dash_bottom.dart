@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:mypaper/app/app_colors.dart';
 import 'package:mypaper/app/theme.dart';
-import 'package:mypaper/features/home/provider/home_bottom_provider.dart';
+import 'package:mypaper/features/dash/enum/dash_bottom_type.dart';
+import 'package:mypaper/features/dash/provider/dash_bottom_provider.dart';
+import 'package:mypaper/features/dash/provider/dash_provider.dart';
 import 'package:provider/provider.dart';
 
-class HomeBottom extends StatelessWidget {
-  const HomeBottom({super.key});
+class DashBottom extends StatelessWidget {
+  const DashBottom({super.key});
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
@@ -14,32 +16,37 @@ class HomeBottom extends StatelessWidget {
       shadowColor: AppColors.grey,
       height: 56,
       padding: const EdgeInsets.only(top: 2, bottom: 2),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          _itemBtn(context, "Home"),
-          _itemBtn(context, "My Exam"),
-        ],
+      child: Selector<DashProvider, DashBottomType>(
+        selector: (p0, p1) => p1.bottomType,
+        builder: (context, type, child) {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              _itemBtn(context, type, DashBottomType.home),
+              _itemBtn(context, type, DashBottomType.tests),
+            ],
+          );
+        },
       ),
     );
   }
 
-  Widget _itemBtn(BuildContext context, String name) {
+  Widget _itemBtn(
+    BuildContext context,
+    DashBottomType slct,
+    DashBottomType type,
+  ) {
     return Expanded(
       child: InkWell(
-        onTap: () => context.read<HomeBottomProvider>().onTap(name),
+        onTap: () => context.read<DashBottomProvider>().onTap(type),
         child: Column(
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 2, bottom: 2),
               child: Icon(
-                name == 'Home'
-                    ? Icons.home
-                    : name == 'My Exam'
-                    ? Icons.quiz
-                    : Icons.emoji_events,
+                type.icon,
                 size: 33,
-                color: context.read<HomeBottomProvider>().index == name
+                color: slct == type
                     ? AppColors.white
                     : AppColors.white.withValues(alpha: 0.6),
               ),
@@ -49,9 +56,9 @@ class HomeBottom extends StatelessWidget {
               height: 15,
               child: Text(
                 textAlign: TextAlign.center,
-                name,
+                type.label,
                 style: textStyle(
-                  color: context.read<HomeBottomProvider>().index == name
+                  color: slct == type
                       ? AppColors.white
                       : AppColors.white.withValues(alpha: 0.7),
                   fontSize: 11.0,

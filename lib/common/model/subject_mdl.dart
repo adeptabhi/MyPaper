@@ -1,20 +1,24 @@
 class SubjectMdl {
   int id;
+  String section;
   String name;
-  String folder;
+  String path;
+
   List<SetMdl> sets;
 
   SubjectMdl({
     required this.id,
+    required this.section,
     required this.name,
-    required this.folder,
+    required this.path,
     required this.sets,
   });
 
   factory SubjectMdl.fromJson(Map<String, dynamic> json) => SubjectMdl(
     id: json['id'],
+    section: json['section'],
     name: json["name"],
-    folder: json["folder"],
+    path: json["path"],
     sets: (json['sets'] as List<dynamic>)
         .map((e) => SetMdl.fromJson(e))
         .toList(),
@@ -23,7 +27,7 @@ class SubjectMdl {
   Map<String, dynamic> toJson() => {
     "id": id,
     "name": name,
-    "folder": folder,
+    "folder": path,
     "sets": sets,
   };
 }

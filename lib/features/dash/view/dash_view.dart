@@ -4,23 +4,23 @@ import 'package:flutter/services.dart';
 import 'package:mypaper/common/dialog/dialog_type.dart';
 import 'package:mypaper/common/model/subject_mdl.dart';
 import 'package:mypaper/common/widget/list_erd_widget.dart';
-import 'package:mypaper/features/home/provider/home_bottom_provider.dart';
-import 'package:mypaper/features/home/provider/home_provider.dart';
-import 'package:mypaper/features/home/view/home_bottom.dart';
-import 'package:mypaper/features/home/widget/home_title_widget.dart';
-import 'package:mypaper/features/home/widget/subject_card_widget.dart';
+import 'package:mypaper/features/dash/provider/dash_bottom_provider.dart';
+import 'package:mypaper/features/dash/provider/dash_provider.dart';
+import 'package:mypaper/features/dash/view/dash_bottom.dart';
+import 'package:mypaper/features/dash/widget/dash_title_widget.dart';
+import 'package:mypaper/features/dash/widget/subject_card_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common/enum/dialog_type.dart';
 
-class HomeView extends StatefulWidget {
-  const HomeView({super.key});
+class DashView extends StatefulWidget {
+  const DashView({super.key});
   @override
-  State<HomeView> createState() => _HomeViewState();
+  State<DashView> createState() => _DashViewState();
 }
 
-class _HomeViewState extends State<HomeView> {
-  late HomeProvider provider = context.read<HomeProvider>();
+class _DashViewState extends State<DashView> {
+  late DashProvider provider = context.read<DashProvider>();
   @override
   void initState() {
     super.initState();
@@ -47,11 +47,11 @@ class _HomeViewState extends State<HomeView> {
         extendBody: true,
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          title: HomeTitleWidget(),
+          title: DashboardTitleWidget(),
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-          child: Selector<HomeProvider, List<SubjectMdl>?>(
+          child: Selector<DashProvider, List<SubjectMdl>?>(
             selector: (p0, p1) => p1.subjects,
             builder: (context, list, child) {
               return ListERDWidget<SubjectMdl>(
@@ -67,8 +67,8 @@ class _HomeViewState extends State<HomeView> {
           ),
         ),
         bottomNavigationBar: Provider(
-          create: (con) => HomeBottomProvider(index: 'Home', context: context),
-          child: HomeBottom(),
+          create: (con) => DashBottomProvider(context: context),
+          child: DashBottom(),
         ),
       ),
     );

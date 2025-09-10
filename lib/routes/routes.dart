@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mypaper/features/home/provider/home_provider.dart';
-import 'package:mypaper/features/home/view/home_view.dart';
+import 'package:mypaper/features/dash/provider/dash_provider.dart';
+import 'package:mypaper/features/dash/view/dash_view.dart';
 import 'package:mypaper/features/paper/provider/paper_provider.dart';
 import 'package:mypaper/features/paper/view/paper_view.dart';
 import 'package:mypaper/features/splash/provider/splash_provider.dart';
@@ -45,13 +45,13 @@ class Routes {
           ),
         );
 
-      case RouteName.home:
+      case RouteName.dash:
         return PageRouteBuilder(
           settings: RouteSettings(name: settings.name),
           pageBuilder: (context, animation, secondaryAnimation) =>
               ChangeNotifierProvider(
-                create: (context) => HomeProvider(context: context),
-                child: const HomeView(),
+                create: (context) => DashProvider(context: context),
+                child: const DashView(),
               ),
         );
 

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class QuesMdl {
   int id;
   String topic;
@@ -5,8 +7,8 @@ class QuesMdl {
   List<String> options;
   int answer;
   int userAnswer;
+  String path;
   bool ansIsVisible = false;
-
   QuesMdl({
     required this.id,
     required this.topic,
@@ -14,23 +16,32 @@ class QuesMdl {
     required this.options,
     required this.answer,
     required this.userAnswer,
+    required this.path,
   });
 
   factory QuesMdl.fromJson(Map<String, dynamic> json) => QuesMdl(
     id: json["id"],
     topic: json["topic"],
     question: json["question"],
-    options: List<String>.from(json["options"].map((x) => x)),
+    options: List<String>.from(
+      (json["options"] is String
+              ? jsonDecode(json["options"])
+              : json["options"])
+          .map((x) => x),
+    ),
     answer: json["answer"],
-    userAnswer: -1,
+    userAnswer: json["userAnswer"] ?? -1,
+    path: json['path'],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
     "topic": topic,
     "question": question,
-    "options": List<dynamic>.from(options.map((x) => x)),
+    "options": jsonEncode(List<dynamic>.from(options.map((x) => x))),
     "answer": answer,
+    "userAnswer": userAnswer,
+    "path": path,
   };
 
   bool get isAns => userAnswer >= 0;

@@ -47,9 +47,10 @@ class ApiService {
         method: HttpMethodTypes.get,
       );
       if (json.isNotEmpty) {
-        return (json['set'] as List<dynamic>)
-            .map((e) => QuesMdl.fromJson(e))
-            .toList();
+        return (json['set'] as List<dynamic>).map((e) {
+          e['path'] = file;
+          return QuesMdl.fromJson(e);
+        }).toList();
       }
     } catch (ex) {
       logError('ApiService/questions', msg: ex);

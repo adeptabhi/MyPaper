@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mypaper/app/theme.dart';
-import 'package:mypaper/features/paper/enum/paper_count_type.dart';
+import 'package:mypaper/common/enum/option_type.dart';
 
 class PaperCountWidget extends StatelessWidget {
-  final PaperCountType type;
+  final OptionType type;
   final String value;
   final String head;
   final bool isCompleted;

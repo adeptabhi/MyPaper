@@ -1,7 +1,10 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:mypaper/common/enum/option_type.dart';
 import 'package:mypaper/common/model/ques_mdl.dart';
 import 'package:mypaper/common/model/subject_mdl.dart';
+import 'package:mypaper/db/db.dart';
+import 'package:mypaper/db/table_name.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class PaperProvider extends ChangeNotifier {
@@ -15,8 +18,24 @@ class PaperProvider extends ChangeNotifier {
     required this.subjectMdl,
     required this.questions,
   });
-
   final ItemScrollController itemScrollController = ItemScrollController();
+  Duration duration = Duration(seconds: 0);
+  Timer? timer;
+  @override
+  void dispose() {
+    super.dispose();
+    timer?.cancel();
+  }
+
+  void startTimer() {
+    if (!isView) {
+      timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+        duration += const Duration(seconds: 1);
+        if (isView) timer.cancel();
+        notifyListeners();
+      });
+    }
+  }
 
   void onSelectOption(QuesMdl mdl, int index) {
     if (!isView) {
@@ -40,8 +59,10 @@ class PaperProvider extends ChangeNotifier {
               ? (mdl.userAnswer == mdl.answer
                     ? OptionType.correctAnswer
                     : OptionType.wrongAnswer)
-              : mdl.answer == index && mdl.isAns
-              ? OptionType.correctAnswer
+              : mdl.answer == index
+              ? mdl.isAns
+                    ? OptionType.correctAnswer
+                    : OptionType.unAnswered
               : OptionType.unselected)
         : mdl.userAnswer == index
         ? OptionType.selected
@@ -50,6 +71,12 @@ class PaperProvider extends ChangeNotifier {
 
   void onViewResult() {
     isView = true;
+    DB.inst.delete(
+      tblName: TableName.sets,
+      where: 'path=?',
+      whereArgs: [subjectMdl.path + setMdl.file],
+    );
+    DB.inst.batchInsert(tblName: TableName.sets, mdlList: questions);
     notifyListeners();
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mypaper/features/paper/provider/paper_drawer_provider.dart';
 import 'package:mypaper/features/paper/provider/paper_provider.dart';
 import 'package:mypaper/features/paper/view/paper_drawer_view.dart';
+import 'package:mypaper/features/paper/widget/paper_appbar_title.dart';
 import 'package:mypaper/features/paper/widget/ques_card_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
@@ -14,13 +15,24 @@ class PaperView extends StatefulWidget {
 
 class _PaperViewState extends State<PaperView> {
   late PaperProvider provider = context.read<PaperProvider>();
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      provider.startTimer();
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    provider.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('${provider.subjectMdl.name} : ${provider.setMdl.name}'),
-      ),
+      appBar: AppBar(title: PaperAppBarTitle()),
       endDrawer: ChangeNotifierProvider(
         create: (context) => PaperDrawerProvider(paperProvider: provider),
         child: PaperDrawerView(paperProvider: provider),

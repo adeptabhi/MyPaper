@@ -1,28 +1,29 @@
 import 'package:flutter/widgets.dart';
+import 'package:mypaper/common/enum/option_type.dart';
 import 'package:mypaper/common/model/ques_mdl.dart';
-import 'package:mypaper/features/paper/enum/paper_count_type.dart';
 import 'package:mypaper/features/paper/provider/paper_provider.dart';
 
 class PaperDrawerProvider extends ChangeNotifier {
   final PaperProvider paperProvider;
-  List<PaperCountType> countTypes;
-  List<PaperCountType> countTypesAll = [
-    PaperCountType.total,
-    PaperCountType.selected,
-    PaperCountType.unselected,
-    PaperCountType.correctAnswer,
-    PaperCountType.wrongAnswer,
+  List<OptionType> countTypes;
+  List<OptionType> countTypesAll = [
+    OptionType.total,
+    OptionType.selected,
+    OptionType.unselected,
+    OptionType.correctAnswer,
+    OptionType.wrongAnswer,
   ];
   PaperDrawerProvider({required this.paperProvider})
     : countTypes = [
-        PaperCountType.total,
+        OptionType.total,
         if (!paperProvider.isView) ...[
-          PaperCountType.selected,
-          PaperCountType.unselected,
+          OptionType.selected,
+          OptionType.unselected,
         ],
         if (paperProvider.isView) ...[
-          PaperCountType.correctAnswer,
-          PaperCountType.wrongAnswer,
+          OptionType.correctAnswer,
+          OptionType.wrongAnswer,
+          OptionType.unAnswered,
         ],
       ];
 
@@ -35,34 +36,36 @@ class PaperDrawerProvider extends ChangeNotifier {
     Navigator.pop(context);
   }
 
-  PaperCountType getCountType(QuesMdl mdl) {
+  OptionType getCountType(QuesMdl mdl) {
     if (paperProvider.isView) {
       return mdl.isNotAns
-          ? PaperCountType.unselected
+          ? OptionType.unAnswered
           : mdl.userAnswer == mdl.answer
-          ? PaperCountType.correctAnswer
-          : PaperCountType.wrongAnswer;
+          ? OptionType.correctAnswer
+          : OptionType.wrongAnswer;
     }
-    return mdl.isNotAns ? PaperCountType.unselected : PaperCountType.selected;
+    return mdl.isNotAns ? OptionType.unselected : OptionType.selected;
   }
 
-  String getCount(PaperCountType type) {
-    List set = paperProvider.questions;
+  String getCount(OptionType type) {
+    List<QuesMdl> set = paperProvider.questions;
     switch (type) {
-      case PaperCountType.total:
+      case OptionType.total:
         return set.length.toString();
-      case PaperCountType.selected:
+      case OptionType.selected:
         return set.where((e) => e.isAns).toList().length.toString();
-      case PaperCountType.unselected:
+      case OptionType.unselected:
         return set.where((e) => e.isNotAns).toList().length.toString();
-      case PaperCountType.correctAnswer:
+      case OptionType.correctAnswer:
         return set.where((e) => e.isRightAns).toList().length.toString();
-      case PaperCountType.wrongAnswer:
+      case OptionType.wrongAnswer:
         return set
             .where((e) => e.isAns && !e.isRightAns)
             .toList()
             .length
             .toString();
+      case OptionType.unAnswered:
+        return set.where((e) => e.isNotAns).toList().length.toString();
     }
   }
 }

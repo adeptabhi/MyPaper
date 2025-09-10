@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mypaper/app/app_colors.dart';
 import 'package:mypaper/app/theme.dart';
 
-class HomeTitleWidget extends StatelessWidget {
-  const HomeTitleWidget({super.key});
+class DashboardTitleWidget extends StatelessWidget {
+  const DashboardTitleWidget({super.key});
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -37,6 +37,7 @@ class HomeTitleWidget extends StatelessWidget {
               right: 0,
               child: Center(
                 child: Text(
+                  //'Vikas Yadav',
                   'UPP Programmer',
                   //'******',
                   style: textStyle(
