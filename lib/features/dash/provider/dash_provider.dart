@@ -44,7 +44,8 @@ class DashProvider extends ChangeNotifier {
                     file: subjectMdl.path + setMdl.file,
                   ));
             if (questions.isEmpty) {
-              toastMsg(
+              snackBarMsg(
+                context,
                 bottomType == DashBottomType.tests
                     ? 'Set Not Attempted'
                     : "Set Not Found",

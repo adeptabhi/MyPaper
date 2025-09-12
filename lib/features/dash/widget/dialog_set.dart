@@ -45,7 +45,6 @@ class DialogSet extends StatelessWidget {
                   SetMdl set = sets[index];
                   return InkWell(
                     onTap: () {
-                      Navigator.pop(context);
                       onTap(set);
                     },
                     child: Column(
@@ -58,7 +57,7 @@ class DialogSet extends StatelessWidget {
                             text: TextSpan(
                               children: [
                                 TextSpan(
-                                  text: '${set.id}.  ',
+                                  text: 'Set ${set.id}:'.padRight(11),
                                   style: textStyle(
                                     fontWeight: FontWeight.w500,
                                     color: AppColors.red,
@@ -69,7 +68,6 @@ class DialogSet extends StatelessWidget {
                                   text: set.name,
                                   style: textStyle(
                                     fontSize: 15.5,
-
                                     color: AppColors.violet,
                                   ),
                                 ),

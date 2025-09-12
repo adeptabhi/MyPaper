@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:mypaper/db/table_name.dart';
 import 'package:mypaper/other/msg.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 // ignore: depend_on_referenced_packages
 import 'package:path/path.dart';
 
@@ -11,10 +11,20 @@ class DB {
   int version = 1;
   Database? db;
   static final DB inst = DB();
+
   Future<void> openDB() async {
+    // ✅ initialize ffi
+    sqfliteFfiInit();
+    databaseFactory = databaseFactoryFfi;
+
     Directory directory = await getApplicationDocumentsDirectory();
     String path = join(directory.path, 'MyPaper.db');
-    db = await openDatabase(path, version: version);
+
+    db = await databaseFactory.openDatabase(
+      path,
+      options: OpenDatabaseOptions(version: version),
+    );
+
     logInfo('DB', msg: '${directory.path}/MyPaper.db');
     await _onCreateTable();
   }
@@ -214,7 +224,6 @@ class DB {
     try {
       await db!.rawDelete('DROP TABLE IF EXISTS $tblName');
       logError('DB/dropTable', msg: 'Table Droped: $tblName');
-
       return true;
     } catch (ex) {
       logError('DB/dropTable', msg: '$ex');
@@ -232,18 +241,6 @@ class DB {
     } catch (ex) {
       logError('DB/doesTableExist', msg: '$ex');
     }
-
     return isTable;
-  }
-
-  Future<bool> doesTableHaveData(String tableName) async {
-    try {
-      final result = await db!.rawQuery('SELECT COUNT(*) FROM $tableName;');
-      final count = Sqflite.firstIntValue(result);
-      return count! > 0;
-    } catch (ex) {
-      logError("DB/doesTableHaveData", msg: '$ex');
-      return false;
-    }
   }
 }

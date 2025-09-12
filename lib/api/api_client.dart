@@ -1,7 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:mypaper/app/app_data.dart';
 import 'package:mypaper/common/enum/http_method_types.dart';
+import 'package:mypaper/main.dart';
 import 'package:mypaper/other/msg.dart';
 
 class ApiClient {
@@ -62,7 +65,7 @@ class ApiClient {
         return jsonResponse;
       }
     } catch (ex) {
-      toastMsg(ex.toString());
+      snackBarMsg(navigatorKey.currentState!.context, ex.toString());
       logError('ApiClient/Request', msg: ex);
     }
     return {};

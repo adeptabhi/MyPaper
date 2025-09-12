@@ -13,17 +13,22 @@ class PaperAppBarTitle extends StatelessWidget {
     var provider = context.read<PaperProvider>();
     return SizedBox(
       width: double.infinity,
+      height: 60,
       child: Stack(
         children: [
-          Text(
-            '${provider.subjectMdl.name} : ${provider.setMdl.name}',
-            style: textStyle(
-              fontSize: 17,
-              fontWeight: FontWeight.w600,
-              color: AppColors.white,
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              '${provider.subjectMdl.name} : ${provider.setMdl.name}',
+              style: textStyle(
+                fontSize: 17,
+                fontWeight: FontWeight.w600,
+                color: AppColors.white,
+              ),
             ),
           ),
           Positioned(
+            top: 35,
             right: 0,
             left: 0,
             child: Center(
