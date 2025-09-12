@@ -9,7 +9,7 @@ snackBarMsg(BuildContext context, String msg) {
     SnackBar(
       content: Text(msg, style: const TextStyle(color: AppColors.white)),
       duration: const Duration(seconds: 3),
-      backgroundColor: AppColors.green50,
+      backgroundColor: AppColors.green,
     ),
   );
 }

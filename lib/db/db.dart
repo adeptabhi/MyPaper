@@ -6,6 +6,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 // ignore: depend_on_referenced_packages
 import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart' as SQL;
 
 class DB {
   int version = 1;
@@ -13,20 +14,25 @@ class DB {
   static final DB inst = DB();
 
   Future<void> openDB() async {
-    // ✅ initialize ffi
-    sqfliteFfiInit();
-    databaseFactory = databaseFactoryFfi;
-
-    Directory directory = await getApplicationDocumentsDirectory();
-    String path = join(directory.path, 'MyPaper.db');
-
-    db = await databaseFactory.openDatabase(
-      path,
-      options: OpenDatabaseOptions(version: version),
-    );
-
-    logInfo('DB', msg: '${directory.path}/MyPaper.db');
-    await _onCreateTable();
+    try {
+      Directory directory = await getApplicationDocumentsDirectory();
+      String path = join(directory.path, 'MyPaper.db');
+      if (Platform.isWindows || Platform.isLinux) {
+        sqfliteFfiInit();
+        databaseFactory = databaseFactoryFfi;
+        db = await databaseFactory.openDatabase(
+          path,
+          options: OpenDatabaseOptions(version: version),
+        );
+      } else {
+        db = await SQL.openDatabase(path, version: version);
+        logInfo('name', msg: 'call');
+      }
+      logInfo('DB', msg: '${directory.path}/MyPaper.db');
+      await _onCreateTable();
+    } catch (ex) {
+      logError('DB/openDB', msg: ex);
+    }
   }
 
   Future<void> _onCreateTable() async {

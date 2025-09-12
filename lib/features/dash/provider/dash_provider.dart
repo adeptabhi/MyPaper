@@ -34,6 +34,7 @@ class DashProvider extends ChangeNotifier {
         builder: (con) => DialogSet(
           sets: subjectMdl.sets,
           onTap: (setMdl) async {
+            Navigator.pop(context);
             List<QuesMdl> questions = (bottomType == DashBottomType.tests
                 ? (await DB.inst.select(
                     tblName: TableName.sets,
@@ -47,8 +48,8 @@ class DashProvider extends ChangeNotifier {
               snackBarMsg(
                 context,
                 bottomType == DashBottomType.tests
-                    ? 'Set Not Attempted'
-                    : "Set Not Found",
+                    ? 'Set ${setMdl.id}(${setMdl.name}): Not Attempted'
+                    : "Set ${setMdl.id}(${setMdl.name}): Not Found ",
               );
             } else {
               Navigator.pushNamed(
