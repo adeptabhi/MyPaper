@@ -29,6 +29,7 @@ class DB {
         logInfo('name', msg: 'call');
       }
       logInfo('DB', msg: '${directory.path}/MyPaper.db');
+      //await dropTable(TableName.sets);
       await _onCreateTable();
     } catch (ex) {
       logError('DB/openDB', msg: ex);
@@ -37,7 +38,7 @@ class DB {
 
   Future<void> _onCreateTable() async {
     List<String> sqlList = [
-      '${TableName.sets} (id INTEGER, topic TEXT, question TEXT, options TEXT, answer INTEGER, userAnswer INTEGER, path TEXT)',
+      '${TableName.sets} (id INTEGER, topic TEXT, question TEXT, options TEXT, answer INTEGER, userAnswer INTEGER, path TEXT,isValid INTEGER,UNIQUE(path,id))',
     ];
     await DB.inst.batchCreateTable(sqlList);
   }

@@ -24,6 +24,7 @@ class DashBottom extends StatelessWidget {
             children: <Widget>[
               _itemBtn(context, type, DashBottomType.home),
               _itemBtn(context, type, DashBottomType.tests),
+              _itemBtn(context, type, DashBottomType.error),
             ],
           );
         },

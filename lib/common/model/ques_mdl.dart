@@ -9,6 +9,7 @@ class QuesMdl {
   int userAnswer;
   String path;
   bool ansIsVisible = false;
+  bool isValid;
   QuesMdl({
     required this.id,
     required this.topic,
@@ -17,6 +18,7 @@ class QuesMdl {
     required this.answer,
     required this.userAnswer,
     required this.path,
+    required this.isValid,
   });
 
   factory QuesMdl.fromJson(Map<String, dynamic> json) => QuesMdl(
@@ -32,6 +34,7 @@ class QuesMdl {
     answer: json["answer"],
     userAnswer: json["userAnswer"] ?? -1,
     path: json['path'],
+    isValid: (json['isValid'] ?? 1) == 1 ? true : false,
   );
 
   Map<String, dynamic> toJson() => {
@@ -42,6 +45,7 @@ class QuesMdl {
     "answer": answer,
     "userAnswer": userAnswer,
     "path": path,
+    "isValid": isValid ? 1 : 0,
   };
 
   bool get isAns => userAnswer >= 0;

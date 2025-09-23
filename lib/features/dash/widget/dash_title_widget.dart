@@ -38,10 +38,11 @@ class DashboardTitleWidget extends StatelessWidget {
               child: Center(
                 child: Text(
                   //'Vikas Yadav',
-                  'UPP Programmer',
-                  //'******',
+                  //'1 November',
+                  // '******',
+                  'Sharpen Your Mind',
                   style: textStyle(
-                    fontSize: 20,
+                    fontSize: 18,
                     fontWeight: FontWeight.w600,
                     color: AppColors.white,
                   ),

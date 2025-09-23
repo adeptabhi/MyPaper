@@ -77,6 +77,7 @@ class PaperDrawerView extends StatelessWidget {
                       },
                       child: PaperCountWidget(
                         value: (index + 1).toString(),
+                        isValid: paperProvider.questions[index].isValid,
                         type: provider.getCountType(
                           paperProvider.questions[index],
                         ),

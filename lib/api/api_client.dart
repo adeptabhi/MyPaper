@@ -8,7 +8,10 @@ import 'package:mypaper/main.dart';
 import 'package:mypaper/other/msg.dart';
 
 class ApiClient {
-  final Map<String, String> _headers = {'Accept': 'application/json'};
+  final Map<String, String> _headers = {
+    'Authorization': 'Bearer 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',
+    'Accept': 'application/json',
+  };
   Future<Map<String, dynamic>> request({
     required String file,
     required HttpMethodTypes method,

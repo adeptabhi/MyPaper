@@ -11,6 +11,7 @@ TextStyle textStyle({double? fontSize, FontWeight? fontWeight, Color? color}) {
 
 ThemeData lightTheme = ThemeData(
   fontFamily: 'Poppins',
+
   appBarTheme: AppBarTheme(
     toolbarHeight: 65,
     backgroundColor: AppColors.blue,
@@ -135,6 +136,7 @@ ThemeData lightTheme = ThemeData(
       borderSide: BorderSide(color: AppColors.blue50, width: 0.7),
     ),
   ),
+  radioTheme: RadioThemeData(),
 );
 
 // AdeptTextFieldTheme textFieldTheme = AdeptTextFieldTheme(

@@ -53,6 +53,11 @@ class PaperProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void onValidationChange(QuesMdl mdl) {
+    mdl.isValid = !mdl.isValid;
+    notifyListeners();
+  }
+
   OptionType getOptionType(QuesMdl mdl, int index) {
     return isView
         ? (mdl.userAnswer == index && mdl.isAns

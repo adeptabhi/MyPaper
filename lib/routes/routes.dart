@@ -3,6 +3,8 @@ import 'package:mypaper/features/dash/provider/dash_provider.dart';
 import 'package:mypaper/features/dash/view/dash_view.dart';
 import 'package:mypaper/features/paper/provider/paper_provider.dart';
 import 'package:mypaper/features/paper/view/paper_view.dart';
+import 'package:mypaper/features/set/provider/set_provider.dart';
+import 'package:mypaper/features/set/view/set_view.dart';
 import 'package:mypaper/features/splash/provider/splash_provider.dart';
 import 'package:mypaper/features/splash/view/splash_view.dart';
 import 'package:mypaper/other/msg.dart';
@@ -53,6 +55,15 @@ class Routes {
                 create: (context) => DashProvider(context: context),
                 child: const DashView(),
               ),
+        );
+
+      case RouteName.set:
+        return rightToLeftSlide(
+          settings: settings,
+          builder: ChangeNotifierProvider.value(
+            value: settings.arguments as SetProvider,
+            child: const SetView(),
+          ),
         );
 
       case RouteName.paper:

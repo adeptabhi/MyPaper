@@ -49,7 +49,9 @@ class _PaperViewState extends State<PaperView> {
                     itemScrollController: provider.itemScrollController,
                     itemCount: provider.questions.length,
                     itemBuilder: (context, index) {
-                      return QuesWidget(questionMdl: provider.questions[index]);
+                      return QuesCardWidget(
+                        questionMdl: provider.questions[index],
+                      );
                     },
                   );
                 },
