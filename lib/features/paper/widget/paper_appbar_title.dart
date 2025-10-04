@@ -19,7 +19,7 @@ class PaperAppBarTitle extends StatelessWidget {
           Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              '${provider.subjectMdl.name} : ${provider.setMdl.name}',
+              '${provider.subjectMdl.name} :${provider.setMdl.id}${String.fromCharCode(provider.setMdl.subId)}. ${provider.setMdl.name}',
               style: textStyle(
                 fontSize: 17,
                 fontWeight: FontWeight.w600,

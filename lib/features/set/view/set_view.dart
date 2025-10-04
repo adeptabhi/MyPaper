@@ -31,22 +31,22 @@ class _SetViewState extends State<SetView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sets - ${provider.sets.length}'),
+        title: Text(provider.subjectMdl.name),
         actions: [modeRadioBtn(title: 'View Mode', value: true)],
       ),
       body: Column(
         children: [
-          if (provider.sets.isNotEmpty)
+          if (provider.sets.value.isNotEmpty)
             MarqueeWidget(
-              items: provider.sets,
+              items: provider.sets.value,
               height: 30,
               itemWidth: 100,
               speed: 1.5,
             ),
 
           Expanded(
-            child: Selector<SetProvider, List<SetMdl>>(
-              selector: (p0, p1) => p1.sets,
+            child: ValueListenableBuilder<List<SetMdl>>(
+              valueListenable: provider.sets,
               builder: (context, list, widget) {
                 return ListView(
                   shrinkWrap: true,

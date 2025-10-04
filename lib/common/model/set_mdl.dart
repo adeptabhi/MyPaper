@@ -25,5 +25,12 @@ class SetMdl {
         ? SetStatus.pending
         : SetStatus.completed,
   );
-  Map<String, dynamic> toJson() => {"id": id, "name": name, "file": file};
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "subId": subId - 96,
+    "name": name,
+    "file": file,
+    "isImp": isImp ? 1 : 0,
+    "status": setStatus == SetStatus.pending ? 0 : 1,
+  };
 }

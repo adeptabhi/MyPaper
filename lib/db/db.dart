@@ -31,7 +31,7 @@ class DB {
         logInfo('name', msg: 'call');
       }
       logInfo('DB', msg: '${directory.path}/MyPaper.db');
-      await dropTable(TableName.sets);
+      //await dropTable(TableName.sets);
       await _onCreateTable();
     } catch (ex) {
       logError('DB/openDB', msg: ex);

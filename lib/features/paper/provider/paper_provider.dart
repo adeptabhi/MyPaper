@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:mypaper/common/enum/option_type.dart';
+import 'package:mypaper/common/dialog/dialog_type.dart';
+import 'package:mypaper/common/enum/dialog_type.dart';
 import 'package:mypaper/common/model/ques_mdl.dart';
 import 'package:mypaper/common/model/set_mdl.dart';
 import 'package:mypaper/common/model/subject_mdl.dart';
@@ -38,51 +39,23 @@ class PaperProvider extends ChangeNotifier {
     }
   }
 
-  void onSelectOption(QuesMdl mdl, int index) {
-    if (!isView) {
-      if (mdl.userAnswer == index) {
-        mdl.userAnswer = -1;
-      } else {
-        mdl.userAnswer = index;
-      }
-      notifyListeners();
-    }
-  }
-
-  void onVisibilityChange(QuesMdl mdl) {
-    mdl.ansIsVisible = !mdl.ansIsVisible;
-    notifyListeners();
-  }
-
-  void onValidationChange(QuesMdl mdl) {
-    mdl.isValid = !mdl.isValid;
-    notifyListeners();
-  }
-
-  OptionType getOptionType(QuesMdl mdl, int index) {
-    return isView
-        ? (mdl.userAnswer == index && mdl.isAns
-              ? (mdl.userAnswer == mdl.answer
-                    ? OptionType.correctAnswer
-                    : OptionType.wrongAnswer)
-              : mdl.answer == index
-              ? mdl.isAns
-                    ? OptionType.correctAnswer
-                    : OptionType.unAnswered
-              : OptionType.unselected)
-        : mdl.userAnswer == index
-        ? OptionType.selected
-        : OptionType.unselected;
-  }
-
-  void onViewResult() {
-    isView = true;
-    DB.inst.delete(
-      tblName: TableName.sets,
-      where: 'path=?',
-      whereArgs: [subjectMdl.path + setMdl.file],
+  void onSaveView(BuildContext context) {
+    dialogType(
+      context,
+      type: DialogType.confirmation,
+      message: 'Are you sure want to Save Paper??',
+      onConfirm: () {
+        Navigator.pop(context);
+        Navigator.pop(context);
+        isView = true;
+        DB.inst.delete(
+          tblName: TableName.sets,
+          where: 'path=?',
+          whereArgs: [subjectMdl.path + setMdl.file],
+        );
+        DB.inst.batchInsert(tblName: TableName.sets, mdlList: questions);
+        notifyListeners();
+      },
     );
-    DB.inst.batchInsert(tblName: TableName.sets, mdlList: questions);
-    notifyListeners();
   }
 }

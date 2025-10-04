@@ -14,11 +14,9 @@ import 'package:mypaper/routes/route_name.dart';
 
 class SetProvider extends ChangeNotifier {
   SubjectMdl subjectMdl;
-  SetProvider({required this.subjectMdl})
-    : sets = subjectMdl.sets.where((e) => e.isImp).toList();
-
+  SetProvider({required this.subjectMdl});
   bool isViewMode = false;
-  List<SetMdl> sets = [];
+  ValueNotifier<List<SetMdl>> sets = ValueNotifier([]);
   void setSetsStatus() async {
     var setsMdl = (await DB.inst.select(
       tblName: TableName.sets,
@@ -27,14 +25,14 @@ class SetProvider extends ChangeNotifier {
       orderBy: 'id ASC',
       groupBy: 'path',
     )).map((e) => QuesMdl.fromJson(e)).toList();
-    for (var mdl1 in setsMdl) {
-      for (var mdl2 in subjectMdl.sets) {
-        if (mdl1.path == subjectMdl.path + mdl2.file) {
-          mdl2.setStatus = SetStatus.completed;
+    for (var dbSetMdl in setsMdl) {
+      for (var subjectSetMdl in subjectMdl.sets) {
+        if (dbSetMdl.path == subjectMdl.path + subjectSetMdl.file) {
+          subjectSetMdl.setStatus = SetStatus.completed;
         }
       }
     }
-    sets = [...subjectMdl.sets];
+    sets.value = List.from(subjectMdl.sets);
     notifyListeners();
   }
 

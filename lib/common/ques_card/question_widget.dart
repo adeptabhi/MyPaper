@@ -3,9 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:mypaper/app/app_colors.dart';
 import 'package:mypaper/app/theme.dart';
 import 'package:mypaper/common/model/ques_mdl.dart';
-import 'package:mypaper/db/db.dart';
-import 'package:mypaper/db/table_name.dart';
+import 'package:mypaper/common/ques_card/ques_card_provider.dart';
 import 'package:mypaper/other/msg.dart';
+import 'package:provider/provider.dart';
 
 class QuestionWidget extends StatelessWidget {
   final QuesMdl quesMdl;
@@ -45,17 +45,13 @@ class QuestionWidget extends StatelessWidget {
                   ),
                 ),
               ),
-              StatefulBuilder(
-                builder: (context, setState) {
+              Selector<QuesCardProvider, bool>(
+                selector: (p0, p1) => quesMdl.isBookmark,
+                builder: (context, isBookmark, w) {
                   return InkWell(
-                    onTap: () async {
-                      quesMdl.isBookmark = !quesMdl.isBookmark;
-                      setState(() {});
-                      await DB.inst.insert(
-                        tblName: TableName.sets,
-                        mdl: quesMdl,
-                      );
-                    },
+                    onTap: () => context
+                        .read<QuesCardProvider>()
+                        .onBookmarkChange(quesMdl),
                     child: SizedBox(
                       width: 50,
                       child: Align(

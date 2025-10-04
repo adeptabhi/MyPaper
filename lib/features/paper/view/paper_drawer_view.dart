@@ -94,20 +94,9 @@ class PaperDrawerView extends StatelessWidget {
                 child: OverflowBox(
                   maxWidth: MediaQuery.of(context).size.width,
                   child: BottomBtnWidget(
-                    'View Result', // paperProvider.isView ? 'Exit' : 'Save & Exit',
+                    'Save Paper',
                     color: AppColors.green,
-                    onTap: () {
-                      dialogType(
-                        context,
-                        type: DialogType.confirmation,
-                        message: 'Are you sure want to view result??',
-                        onConfirm: () {
-                          Navigator.pop(context);
-                          Navigator.pop(context);
-                          provider.paperProvider.onViewResult();
-                        },
-                      );
-                    },
+                    onTap: () => provider.paperProvider.onSaveView(context),
                   ),
                 ),
               ),

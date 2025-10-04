@@ -1,12 +1,16 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'package:mypaper/app/app_colors.dart';
+import 'package:mypaper/common/btn/bottom_btn_widget.dart';
 import 'package:mypaper/common/dialog/dialog_type.dart';
+import 'package:mypaper/common/enum/ques_selection_type.dart';
+import 'package:mypaper/common/ques_card/ques_card_provider.dart';
+import 'package:mypaper/common/ques_card/ques_card_view.dart';
 import 'package:mypaper/features/paper/provider/paper_drawer_provider.dart';
 import 'package:mypaper/features/paper/provider/paper_provider.dart';
 import 'package:mypaper/features/paper/view/paper_drawer_view.dart';
 import 'package:mypaper/features/paper/widget/paper_appbar_title.dart';
-import 'package:mypaper/features/paper/widget/ques_card_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
@@ -65,15 +69,22 @@ class _PaperViewState extends State<PaperView> {
               Expanded(
                 child: Selector<PaperProvider, bool>(
                   selector: (p0, p1) => p1.isView,
-                  builder: (context, value, child) {
-                    return ScrollablePositionedList.builder(
-                      itemScrollController: provider.itemScrollController,
-                      itemCount: provider.questions.length,
-                      itemBuilder: (context, index) {
-                        return QuesCardWidget(
-                          quesMdl: provider.questions[index],
-                        );
-                      },
+                  builder: (context, isView, child) {
+                    return ChangeNotifierProvider(
+                      create: (context) => QuesCardProvider(
+                        type: isView
+                            ? QuesSelectionType.isview
+                            : QuesSelectionType.paper,
+                      ),
+                      child: ScrollablePositionedList.builder(
+                        itemScrollController: provider.itemScrollController,
+                        itemCount: provider.questions.length,
+                        itemBuilder: (context, index) {
+                          return QuesCardView(
+                            quesMdl: provider.questions[index],
+                          );
+                        },
+                      ),
                     );
                   },
                 ),

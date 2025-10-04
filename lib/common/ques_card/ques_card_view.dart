@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:mypaper/app/app_colors.dart';
 import 'package:mypaper/app/theme.dart';
 import 'package:mypaper/common/model/ques_mdl.dart';
+import 'package:mypaper/common/ques_card/ques_card_provider.dart';
+import 'package:mypaper/common/ques_card/question_widget.dart';
 import 'package:mypaper/common/widget/card_widget.dart';
-import 'package:mypaper/common/widget/question_widget.dart';
-import 'package:mypaper/features/paper/provider/paper_provider.dart';
-import 'package:mypaper/features/paper/widget/ques_option_widget.dart';
+import 'package:mypaper/common/ques_card/ques_option_widget.dart';
 import 'package:provider/provider.dart';
 
-class QuesCardWidget extends StatelessWidget {
+class QuesCardView extends StatelessWidget {
   final QuesMdl quesMdl;
-  const QuesCardWidget({super.key, required this.quesMdl});
+  const QuesCardView({super.key, required this.quesMdl});
   @override
   Widget build(BuildContext context) {
     return CardWidget(
@@ -25,17 +25,17 @@ class QuesCardWidget extends StatelessWidget {
             (index) => Padding(
               padding: const EdgeInsets.symmetric(vertical: 5),
               child: InkWell(
-                onTap: () => context.read<PaperProvider>().onSelectOption(
+                onTap: () => context.read<QuesCardProvider>().onSelectOption(
                   quesMdl,
                   index,
                 ),
-                child: Selector<PaperProvider, int>(
+                child: Selector<QuesCardProvider, int>(
                   selector: (p0, p1) => quesMdl.userAnswer,
                   builder: (context, value, child) {
                     return QuesOptionWidget(
                       option: quesMdl.options[index],
                       index: index,
-                      type: context.read<PaperProvider>().getOptionType(
+                      type: context.read<QuesCardProvider>().getOptionType(
                         quesMdl,
                         index,
                       ),
@@ -49,12 +49,12 @@ class QuesCardWidget extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: Selector<PaperProvider, bool>(
+                child: Selector<QuesCardProvider, bool>(
                   selector: (c, p) => quesMdl.ansIsVisible,
                   builder: (c, isVisible, child) {
                     return InkWell(
                       onTap: () => context
-                          .read<PaperProvider>()
+                          .read<QuesCardProvider>()
                           .onVisibilityChange(quesMdl),
                       child: Row(
                         children: [
@@ -85,9 +85,10 @@ class QuesCardWidget extends StatelessWidget {
               SizedBox(
                 width: 50,
                 child: InkWell(
-                  onTap: () =>
-                      context.read<PaperProvider>().onValidationChange(quesMdl),
-                  child: Selector<PaperProvider, bool>(
+                  onTap: () => context
+                      .read<QuesCardProvider>()
+                      .onValidationChange(quesMdl),
+                  child: Selector<QuesCardProvider, bool>(
                     selector: (c, p) => quesMdl.isValid,
                     builder: (c, isValid, child) {
                       return Row(
