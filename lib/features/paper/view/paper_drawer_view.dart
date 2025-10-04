@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:mypaper/app/app_colors.dart';
 import 'package:mypaper/app/theme.dart';
@@ -19,7 +21,7 @@ class PaperDrawerView extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 30),
       child: Drawer(
-        width: 250,
+        width: Platform.isWindows ? 350 : 250,
         child: Padding(
           padding: const EdgeInsets.only(left: 14, right: 14, top: 14),
           child: Column(
@@ -86,30 +88,29 @@ class PaperDrawerView extends StatelessWidget {
                   },
                 ),
               ),
-              if (!provider.paperProvider.isView)
-                SizedBox(
-                  width: double.infinity,
-                  height: 45,
-                  child: OverflowBox(
-                    maxWidth: MediaQuery.of(context).size.width,
-                    child: BottomBtnWidget(
-                      'View Result', // paperProvider.isView ? 'Exit' : 'Save & Exit',
-                      color: AppColors.green,
-                      onTap: () {
-                        dialogType(
-                          context,
-                          type: DialogType.confirmation,
-                          message: 'Are you sure want to view result??',
-                          onConfirm: () {
-                            Navigator.pop(context);
-                            Navigator.pop(context);
-                            provider.paperProvider.onViewResult();
-                          },
-                        );
-                      },
-                    ),
+              SizedBox(
+                width: double.infinity,
+                height: 45,
+                child: OverflowBox(
+                  maxWidth: MediaQuery.of(context).size.width,
+                  child: BottomBtnWidget(
+                    'View Result', // paperProvider.isView ? 'Exit' : 'Save & Exit',
+                    color: AppColors.green,
+                    onTap: () {
+                      dialogType(
+                        context,
+                        type: DialogType.confirmation,
+                        message: 'Are you sure want to view result??',
+                        onConfirm: () {
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                          provider.paperProvider.onViewResult();
+                        },
+                      );
+                    },
                   ),
                 ),
+              ),
             ],
           ),
         ),

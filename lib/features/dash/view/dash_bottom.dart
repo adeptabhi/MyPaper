@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mypaper/app/app_colors.dart';
 import 'package:mypaper/app/theme.dart';
-import 'package:mypaper/features/dash/enum/dash_bottom_type.dart';
+import 'package:mypaper/features/dash/enum/bottom_type.dart';
 import 'package:mypaper/features/dash/provider/dash_bottom_provider.dart';
 import 'package:mypaper/features/dash/provider/dash_provider.dart';
 import 'package:provider/provider.dart';
@@ -16,15 +16,15 @@ class DashBottom extends StatelessWidget {
       shadowColor: AppColors.grey,
       height: 56,
       padding: const EdgeInsets.only(top: 2, bottom: 2),
-      child: Selector<DashProvider, DashBottomType>(
+      child: Selector<DashProvider, BottomType>(
         selector: (p0, p1) => p1.bottomType,
         builder: (context, type, child) {
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              _itemBtn(context, type, DashBottomType.home),
-              _itemBtn(context, type, DashBottomType.tests),
-              _itemBtn(context, type, DashBottomType.error),
+              _itemBtn(context, type, BottomType.home),
+              _itemBtn(context, type, BottomType.bookmark),
+              _itemBtn(context, type, BottomType.error),
             ],
           );
         },
@@ -32,11 +32,7 @@ class DashBottom extends StatelessWidget {
     );
   }
 
-  Widget _itemBtn(
-    BuildContext context,
-    DashBottomType slct,
-    DashBottomType type,
-  ) {
+  Widget _itemBtn(BuildContext context, BottomType slct, BottomType type) {
     return Expanded(
       child: InkWell(
         onTap: () => context.read<DashBottomProvider>().onTap(type),

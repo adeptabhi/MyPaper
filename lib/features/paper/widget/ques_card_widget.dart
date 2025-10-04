@@ -3,13 +3,14 @@ import 'package:mypaper/app/app_colors.dart';
 import 'package:mypaper/app/theme.dart';
 import 'package:mypaper/common/model/ques_mdl.dart';
 import 'package:mypaper/common/widget/card_widget.dart';
+import 'package:mypaper/common/widget/question_widget.dart';
 import 'package:mypaper/features/paper/provider/paper_provider.dart';
 import 'package:mypaper/features/paper/widget/ques_option_widget.dart';
 import 'package:provider/provider.dart';
 
 class QuesCardWidget extends StatelessWidget {
-  final QuesMdl questionMdl;
-  const QuesCardWidget({super.key, required this.questionMdl});
+  final QuesMdl quesMdl;
+  const QuesCardWidget({super.key, required this.quesMdl});
   @override
   Widget build(BuildContext context) {
     return CardWidget(
@@ -18,48 +19,24 @@ class QuesCardWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          RichText(
-            text: TextSpan(
-              children: [
-                TextSpan(
-                  text: '${questionMdl.id}. ',
-                  style: textStyle(
-                    fontSize: 14,
-                    color: AppColors.grey,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                TextSpan(
-                  text: questionMdl.question,
-                  style: textStyle(
-                    fontSize: 14,
-                    color: AppColors.grey,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(height: 5),
-          Divider(),
-          SizedBox(height: 5),
+          QuestionWidget(quesMdl: quesMdl),
           ...List.generate(
-            questionMdl.options.length,
+            quesMdl.options.length,
             (index) => Padding(
               padding: const EdgeInsets.symmetric(vertical: 5),
               child: InkWell(
                 onTap: () => context.read<PaperProvider>().onSelectOption(
-                  questionMdl,
+                  quesMdl,
                   index,
                 ),
                 child: Selector<PaperProvider, int>(
-                  selector: (p0, p1) => questionMdl.userAnswer,
+                  selector: (p0, p1) => quesMdl.userAnswer,
                   builder: (context, value, child) {
                     return QuesOptionWidget(
-                      option: questionMdl.options[index],
+                      option: quesMdl.options[index],
                       index: index,
                       type: context.read<PaperProvider>().getOptionType(
-                        questionMdl,
+                        quesMdl,
                         index,
                       ),
                     );
@@ -73,15 +50,15 @@ class QuesCardWidget extends StatelessWidget {
             children: [
               Expanded(
                 child: Selector<PaperProvider, bool>(
-                  selector: (c, p) => questionMdl.ansIsVisible,
+                  selector: (c, p) => quesMdl.ansIsVisible,
                   builder: (c, isVisible, child) {
-                    return Row(
-                      children: [
-                        InkWell(
-                          onTap: () => context
-                              .read<PaperProvider>()
-                              .onVisibilityChange(questionMdl),
-                          child: Padding(
+                    return InkWell(
+                      onTap: () => context
+                          .read<PaperProvider>()
+                          .onVisibilityChange(quesMdl),
+                      child: Row(
+                        children: [
+                          Padding(
                             padding: const EdgeInsets.only(right: 5, left: 3),
                             child: Icon(
                               isVisible
@@ -90,10 +67,17 @@ class QuesCardWidget extends StatelessWidget {
                               size: 18,
                             ),
                           ),
-                        ),
-                        if (isVisible)
-                          Text(questionMdl.options[questionMdl.answer]),
-                      ],
+                          if (isVisible)
+                            Text(
+                              'Option : ${String.fromCharCode(quesMdl.answer + 97)}',
+                              style: textStyle(
+                                color: AppColors.green,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                        ],
+                      ),
                     );
                   },
                 ),
@@ -101,11 +85,10 @@ class QuesCardWidget extends StatelessWidget {
               SizedBox(
                 width: 50,
                 child: InkWell(
-                  onTap: () => context.read<PaperProvider>().onValidationChange(
-                    questionMdl,
-                  ),
+                  onTap: () =>
+                      context.read<PaperProvider>().onValidationChange(quesMdl),
                   child: Selector<PaperProvider, bool>(
-                    selector: (c, p) => questionMdl.isValid,
+                    selector: (c, p) => quesMdl.isValid,
                     builder: (c, isValid, child) {
                       return Row(
                         crossAxisAlignment: CrossAxisAlignment.center,

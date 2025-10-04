@@ -49,30 +49,35 @@ class ListERDWidget<T> extends StatelessWidget {
                     minHeight: constraints.maxHeight - 55,
                   ),
                   child: Center(
-                    child: Card(
-                      color: AppColors.white,
-                      child: Stack(
-                        children: [
-                          Image.asset(
-                            '${AppData.assets}empty.png',
-                            width: 200,
-                            height: 190,
-                          ),
-                          Positioned(
-                            left: 0,
-                            right: 0,
-                            bottom: 15,
-                            child: Center(
-                              child: Text(
-                                title ?? 'No Data Found',
-                                style: textStyle(
-                                  fontWeight: FontWeight.w500,
-                                  color: Color(0xFF8E8E93),
+                    child: SizedBox(
+                      width: 280,
+                      height: 250,
+                      child: Card(
+                        color: AppColors.white,
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Image.asset(
+                              '${AppData.assets}empty.png',
+                              width: 200,
+                              height: 190,
+                            ),
+                            Positioned(
+                              left: 5,
+                              right: 5,
+                              bottom: 15,
+                              child: Center(
+                                child: Text(
+                                  title ?? 'No Data Found',
+                                  style: textStyle(
+                                    fontWeight: FontWeight.w500,
+                                    color: Color(0xFF8E8E93),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),

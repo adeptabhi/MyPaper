@@ -5,12 +5,12 @@ import 'package:mypaper/common/dialog/dialog_type.dart';
 import 'package:mypaper/common/model/ques_mdl.dart';
 import 'package:mypaper/common/model/subject_mdl.dart';
 import 'package:mypaper/common/widget/list_erd_widget.dart';
-import 'package:mypaper/features/dash/enum/dash_bottom_type.dart';
+import 'package:mypaper/features/dash/enum/bottom_type.dart';
 import 'package:mypaper/features/dash/provider/dash_bottom_provider.dart';
 import 'package:mypaper/features/dash/provider/dash_provider.dart';
 import 'package:mypaper/features/dash/view/dash_bottom.dart';
 import 'package:mypaper/features/dash/widget/dash_title_widget.dart';
-import 'package:mypaper/features/dash/widget/error_ques_card_widget.dart';
+import 'package:mypaper/features/dash/widget/dash_ques_card_widget.dart';
 import 'package:mypaper/features/dash/widget/subject_card_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -54,37 +54,62 @@ class _DashViewState extends State<DashView> {
         ),
         body: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-          child: Selector<DashProvider, DashBottomType>(
-            selector: (p0, p1) => p1.bottomType,
-            builder: (context, type, w) {
-              return type == DashBottomType.error
-                  ? Selector<DashProvider, List<QuesMdl>?>(
-                      selector: (p0, p1) => p1.erros,
-                      builder: (context, list, child) {
-                        return ListERDWidget<QuesMdl>(
-                          onRefresh: () => provider.getErrorQuestion(),
-                          title: 'No Question Found',
-                          list: list,
-                          builder: (mdl, index) =>
-                              ErrorQuesCardWidget(questionMdl: mdl),
-                        );
-                      },
-                    )
-                  : Selector<DashProvider, List<SubjectMdl>?>(
-                      selector: (p0, p1) => p1.subjects,
-                      builder: (context, list, child) {
-                        return ListERDWidget<SubjectMdl>(
-                          onRefresh: () => provider.getSubject(),
-                          title: 'No Subject Found',
-                          list: list,
-                          builder: (mdl, index) => InkWell(
-                            onTap: () => provider.onTapCard(mdl),
-                            child: SubjectCardWidget(mdl: mdl),
-                          ),
-                        );
-                      },
-                    );
-            },
+          child: Column(
+            children: [
+              Expanded(
+                child: Selector<DashProvider, BottomType>(
+                  selector: (p0, p1) => p1.bottomType,
+                  builder: (context, type, w) {
+                    return type == BottomType.error
+                        ? Selector<DashProvider, List<QuesMdl>?>(
+                            selector: (p0, p1) => p1.quesErros,
+                            builder: (context, list, child) {
+                              return ListERDWidget<QuesMdl>(
+                                onRefresh: () => provider.getErrorQuestion(),
+                                title: 'No Error Question Found',
+                                list: list,
+                                builder: (mdl, index) => DashQuesCardWidget(
+                                  isError: true,
+                                  quesMdl: mdl,
+                                ),
+                              );
+                            },
+                          )
+                        : type == BottomType.bookmark
+                        ? Selector<DashProvider, List<QuesMdl>?>(
+                            selector: (p0, p1) => p1.quesBookmarks,
+                            builder: (context, list, child) {
+                              return ListERDWidget<QuesMdl>(
+                                onRefresh: () => provider.getBookmarkQuestion(
+                                  provider.subjectMdl,
+                                ),
+                                title: 'No Bookmark Question Found',
+                                list: list,
+                                builder: (mdl, index) => DashQuesCardWidget(
+                                  isError: false,
+                                  quesMdl: mdl,
+                                ),
+                              );
+                            },
+                          )
+                        : Selector<DashProvider, List<SubjectMdl>?>(
+                            selector: (p0, p1) => p1.subjects,
+                            builder: (context, list, child) {
+                              return ListERDWidget<SubjectMdl>(
+                                onRefresh: () => provider.getSubject(),
+                                title: 'No Subject Found',
+                                list: list,
+                                builder: (mdl, index) => InkWell(
+                                  onTap: () => provider.onTapCard(mdl),
+                                  child: SubjectCardWidget(mdl: mdl),
+                                ),
+                              );
+                            },
+                          );
+                  },
+                ),
+              ),
+            ],
           ),
         ),
         bottomNavigationBar: Provider(

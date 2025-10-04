@@ -5,7 +5,7 @@ import 'package:mypaper/common/model/ques_mdl.dart';
 import 'package:mypaper/common/model/subject_mdl.dart';
 import 'package:mypaper/db/db.dart';
 import 'package:mypaper/db/table_name.dart';
-import 'package:mypaper/features/dash/enum/dash_bottom_type.dart';
+import 'package:mypaper/features/dash/enum/bottom_type.dart';
 import 'package:mypaper/features/set/provider/set_provider.dart';
 import 'package:mypaper/other/msg.dart';
 import 'package:mypaper/routes/route_name.dart';
@@ -14,15 +14,33 @@ class DashProvider extends ChangeNotifier {
   BuildContext context;
   List<SubjectMdl>? subjects;
   DashProvider({required this.context});
-  DashBottomType bottomType = DashBottomType.home;
-  List<QuesMdl>? erros;
+  BottomType bottomType = BottomType.home;
+
+  SubjectMdl? subjectMdl;
+  List<QuesMdl>? quesErros;
+  List<QuesMdl>? quesBookmarks;
+
   void getSubject() async {
     subjects = await ApiService().subjects();
+    subjectMdl = subjects != null ? subjects![0] : null;
+    notifyListeners();
+  }
+
+  void getBookmarkQuestion(SubjectMdl? mdl) async {
+    if (mdl != null) {
+      subjectMdl = mdl;
+      quesBookmarks = (await DB.inst.select(
+        tblName: TableName.sets,
+        where: 'isBookmark=? AND path like ?',
+        whereArgs: [1, "${mdl.path}%"],
+        orderBy: 'path ASC , id ASC',
+      )).map((e) => QuesMdl.fromJson(e)).toList();
+    }
     notifyListeners();
   }
 
   void getErrorQuestion() async {
-    erros = (await DB.inst.select(
+    quesErros = (await DB.inst.select(
       tblName: TableName.sets,
       where: 'isValid=?',
       whereArgs: [0],
@@ -46,12 +64,15 @@ class DashProvider extends ChangeNotifier {
     }
   }
 
-  void updateBottomType(DashBottomType type) async {
+  void updateBottomType(BottomType type) async {
     bottomType = type;
     notifyListeners();
-    if (bottomType == DashBottomType.error) {
-      erros = null;
+    if (bottomType == BottomType.error) {
+      quesErros = null;
       getErrorQuestion();
+    } else if (bottomType == BottomType.bookmark) {
+      quesBookmarks = null;
+      getBookmarkQuestion(subjectMdl);
     }
   }
 
@@ -60,7 +81,7 @@ class DashProvider extends ChangeNotifier {
       Navigator.pushNamed(
         context,
         RouteName.set,
-        arguments: SetProvider(bottomType: bottomType, subjectMdl: subjectMdl),
+        arguments: SetProvider(subjectMdl: subjectMdl),
       );
     } else {
       snackBarMsg(context, "Set Not Found");

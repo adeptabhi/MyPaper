@@ -1,3 +1,5 @@
+// ignore_for_file: library_prefixes
+
 import 'dart:convert';
 import 'dart:io';
 import 'package:mypaper/db/table_name.dart';
@@ -29,7 +31,7 @@ class DB {
         logInfo('name', msg: 'call');
       }
       logInfo('DB', msg: '${directory.path}/MyPaper.db');
-      //await dropTable(TableName.sets);
+      await dropTable(TableName.sets);
       await _onCreateTable();
     } catch (ex) {
       logError('DB/openDB', msg: ex);
@@ -38,7 +40,7 @@ class DB {
 
   Future<void> _onCreateTable() async {
     List<String> sqlList = [
-      '${TableName.sets} (id INTEGER, topic TEXT, question TEXT, options TEXT, answer INTEGER, userAnswer INTEGER, path TEXT,isValid INTEGER,UNIQUE(path,id))',
+      '${TableName.sets} (id INTEGER, question TEXT, options TEXT, answer INTEGER, userAnswer INTEGER, path TEXT,isBookmark INTEGER,isValid INTEGER,UNIQUE(path,id))',
     ];
     await DB.inst.batchCreateTable(sqlList);
   }
@@ -155,6 +157,8 @@ class DB {
     String? orderBy,
     int? limit,
     int? offset,
+    bool? distinct,
+    String? groupBy,
   }) async {
     try {
       final result = await db!.query(
@@ -164,6 +168,8 @@ class DB {
         orderBy: orderBy,
         limit: limit,
         offset: offset,
+        groupBy: groupBy,
+        distinct: distinct,
       );
       logInfo('DB/select', msg: jsonEncode(result));
       logSuccess(

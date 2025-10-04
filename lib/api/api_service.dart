@@ -24,12 +24,14 @@ class ApiService {
         method: HttpMethodTypes.get,
       );
       if (json.isNotEmpty) {
-        return (json['subject'] as List<dynamic>)
+        var data = (json['subjects'] as List<dynamic>)
             .map((e) => SubjectMdl.fromJson(e))
             .toList();
+        return data;
       }
     } catch (ex) {
       logError('ApiService/subjects', msg: ex);
+      snackBarMsg(context, 'Error Api Service\nModel Mapping');
     } finally {
       if (isLoader) dialogClose(context);
     }
@@ -47,13 +49,15 @@ class ApiService {
         method: HttpMethodTypes.get,
       );
       if (json.isNotEmpty) {
-        return (json['set'] as List<dynamic>).map((e) {
+        var data = (json['set'] as List<dynamic>).map((e) {
           e['path'] = file;
           return QuesMdl.fromJson(e);
         }).toList();
+        return data;
       }
     } catch (ex) {
       logError('ApiService/questions', msg: ex);
+      snackBarMsg(context, 'Model Mapping Issue');
     } finally {
       if (isLoader) dialogClose(context);
     }
