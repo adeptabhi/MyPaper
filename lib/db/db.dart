@@ -40,7 +40,7 @@ class DB {
 
   Future<void> _onCreateTable() async {
     List<String> sqlList = [
-      '${TableName.sets} (id INTEGER, question TEXT, options TEXT, answer INTEGER, userAnswer INTEGER, path TEXT,isBookmark INTEGER,isValid INTEGER,UNIQUE(path,id))',
+      '${TableName.sets} (id INTEGER, question TEXT, options TEXT, answer INTEGER, userAnswer INTEGER, path TEXT,isBookmark INTEGER,isValid INTEGER,explanation TEXT,UNIQUE(path,id))',
     ];
     await DB.inst.batchCreateTable(sqlList);
   }

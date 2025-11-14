@@ -1,3 +1,3 @@
 class TableName {
-  static String sets = 'Sets';
+  static String sets = 'sets';
 }

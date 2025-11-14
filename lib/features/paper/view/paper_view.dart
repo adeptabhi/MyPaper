@@ -1,8 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
-import 'package:mypaper/app/app_colors.dart';
-import 'package:mypaper/common/btn/bottom_btn_widget.dart';
 import 'package:mypaper/common/dialog/dialog_type.dart';
 import 'package:mypaper/common/enum/ques_selection_type.dart';
 import 'package:mypaper/common/ques_card/ques_card_provider.dart';
@@ -71,6 +69,7 @@ class _PaperViewState extends State<PaperView> {
                   selector: (p0, p1) => p1.isView,
                   builder: (context, isView, child) {
                     return ChangeNotifierProvider(
+                      key: GlobalKey(),
                       create: (context) => QuesCardProvider(
                         type: isView
                             ? QuesSelectionType.isview

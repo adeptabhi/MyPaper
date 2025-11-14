@@ -9,6 +9,7 @@ class QuesMdl {
   String path;
   bool isBookmark;
   bool isValid;
+  String explanation;
   bool ansIsVisible = false;
 
   QuesMdl({
@@ -20,6 +21,7 @@ class QuesMdl {
     required this.path,
     required this.isBookmark,
     required this.isValid,
+    required this.explanation,
   });
 
   factory QuesMdl.fromJson(Map<String, dynamic> json) => QuesMdl(
@@ -36,6 +38,7 @@ class QuesMdl {
     path: json['path'],
     isBookmark: (json['isBookmark'] ?? 0) == 1 ? true : false,
     isValid: (json['isValid'] ?? 1) == 1 ? true : false,
+    explanation: json['explanation'] ?? '',
   );
 
   Map<String, dynamic> toJson() => {
@@ -47,6 +50,7 @@ class QuesMdl {
     "path": path,
     "isBookmark": isBookmark ? 1 : 0,
     "isValid": isValid ? 1 : 0,
+    "explanation": explanation,
   };
 
   @override

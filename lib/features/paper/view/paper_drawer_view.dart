@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:mypaper/app/app_colors.dart';
 import 'package:mypaper/app/theme.dart';
 import 'package:mypaper/common/btn/bottom_btn_widget.dart';
-import 'package:mypaper/common/dialog/dialog_type.dart';
-import 'package:mypaper/common/enum/dialog_type.dart';
 import 'package:mypaper/common/enum/option_type.dart';
 import 'package:mypaper/features/paper/provider/paper_drawer_provider.dart';
 import 'package:mypaper/features/paper/provider/paper_provider.dart';

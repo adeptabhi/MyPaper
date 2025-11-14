@@ -47,6 +47,7 @@ class QuesCardView extends StatelessWidget {
           ),
           SizedBox(height: 5),
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
                 child: Selector<QuesCardProvider, bool>(
@@ -57,6 +58,8 @@ class QuesCardView extends StatelessWidget {
                           .read<QuesCardProvider>()
                           .onVisibilityChange(quesMdl),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
                             padding: const EdgeInsets.only(right: 5, left: 3),
@@ -68,12 +71,47 @@ class QuesCardView extends StatelessWidget {
                             ),
                           ),
                           if (isVisible)
-                            Text(
-                              'Option : ${String.fromCharCode(quesMdl.answer + 97)}',
-                              style: textStyle(
-                                color: AppColors.green,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Option : ${String.fromCharCode(quesMdl.answer + 97)}',
+                                    style: textStyle(
+                                      color: AppColors.green,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  if (quesMdl.explanation.isNotEmpty)
+                                    RichText(
+                                      text: TextSpan(
+                                        style: const TextStyle(
+                                          fontSize: 16.0,
+                                          color: Colors.black,
+                                        ),
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                            text: 'Explanation : ',
+                                            style: textStyle(
+                                              color: AppColors.red,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                          TextSpan(
+                                            text: quesMdl.explanation,
+                                            style: textStyle(
+                                              color: AppColors.charcoal,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                ],
                               ),
                             ),
                         ],
@@ -82,6 +120,7 @@ class QuesCardView extends StatelessWidget {
                   },
                 ),
               ),
+              SizedBox(width: 5),
               SizedBox(
                 width: 50,
                 child: InkWell(
